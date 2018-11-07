@@ -1,0 +1,115 @@
+<?php
+
+namespace Coxy121\RingCentralLaravel\Tests;
+
+use Coxy121\RingCentralLaravel\Exceptions\CouldNotSendMessage;
+use Coxy121\RingCentralLaravel\RingCentral;
+use Dotenv\Dotenv;
+
+class RingCentralOperatorTest extends AbstractTestCase
+{
+	/** @var Coxy121\RingCentralLaravel\RingCentral */
+    protected $ringCentral;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+		$this->loadEnvironmentVariables();
+
+		$this->ringCentral = new RingCentral();
+
+		$this->ringCentral
+            ->setClientId(env('RINGCENTRAL_CLIENT_ID'))
+            ->setClientSecret(env('RINGCENTRAL_CLIENT_SECRET'))
+            ->setServerUrl(env('RINGCENTRAL_SERVER_URL'))
+            ->setUsername(env('RINGCENTRAL_USERNAME'))
+            ->setOperatorExtension(env('RINGCENTRAL_OPERATOR_EXTENSION'))
+            ->setOperatorPassword(env('RINGCENTRAL_OPERATOR_PASSWORD'));
+    }
+
+    protected function loadEnvironmentVariables()
+    {
+        if (! file_exists(__DIR__.'/../.env')) {
+            return;
+        }
+        $dotenv = new Dotenv(__DIR__.'/..');
+        $dotenv->load();
+    }
+
+ 	/** @test */
+    public function it_can_send_an_sms_message()
+    {
+        $result = $this->ringCentral->sendMessage([
+            'to' => env('RINGCENTRAL_RECEIVER'),
+            'text' => 'Test Message'
+        ]);
+
+        $this->assertNotNull($result->json());
+
+        $this->assertEquals('Test Message', $result->json()->subject);
+        $this->assertEquals(env('RINGCENTRAL_RECEIVER'), $result->json()->to[0]->phoneNumber);
+        $this->assertEquals(env('RINGCENTRAL_USERNAME'), $result->json()->from->phoneNumber);
+	}
+
+	/** @test */
+    public function it_can_retrieve_operator_sent_sms_messages_from_previous_24_hours()
+    {
+        $result = $this->ringCentral->getOperatorMessages();
+
+		$firstMessage = (array) $result[0];
+
+		$this->assertArrayHasKey('id',  $firstMessage);
+        $this->assertArrayHasKey('to', $firstMessage);
+        $this->assertArrayHasKey('from', $firstMessage);
+        $this->assertArrayHasKey('subject', $firstMessage);
+        $this->assertArrayHasKey('attachments', $firstMessage);
+	}
+
+	/** @test */
+    public function it_can_retrieve_operator_sent_sms_messages_from_a_set_date()
+    {
+        $result = $this->ringCentral->getOperatorMessages((new \DateTime())->modify('-1 mins'));
+
+  		$this->assertEquals(1, count($result));
+
+		$firstMessage = (array) $result[0];
+
+		$this->assertArrayHasKey('id',  $firstMessage);
+        $this->assertArrayHasKey('to', $firstMessage);
+        $this->assertArrayHasKey('from', $firstMessage);
+        $this->assertArrayHasKey('subject', $firstMessage);
+        $this->assertArrayHasKey('attachments', $firstMessage);
+	}
+
+    /** @test */
+    public function it_requires_a_to_number_to_send_an_sms_message()
+    {
+        $this->expectException(CouldNotSendMessage::class);
+
+        $this->ringCentral->sendMessage([
+            'text' => 'Test Message'
+        ]);
+    }
+
+    /** @test */
+    public function it_requires_a_to_message_to_send_an_sms_message()
+    {
+        $this->expectException(CouldNotSendMessage::class);
+
+        $this->ringCentral->sendMessage([
+            'to' => env('RINGCENTRAL_RECEIVER'),
+        ]);
+    }
+
+    /** @test */
+    public function an_exception_is_thrown_if_message_not_sent()
+    {
+        $this->expectException(\RingCentral\SDK\Http\ApiException::class);
+
+        $this->ringCentral->sendMessage([
+            'to' => 123,
+            'text' => 'Test Message'
+        ]);
+    }
+}
