@@ -83,6 +83,23 @@ class RingCentralOperatorTest extends AbstractTestCase
 	}
 
     /** @test */
+    public function it_can_retrieve_operator_sent_sms_messages_from_a_set_date_to_a_set_date()
+    {
+        $result = $this->ringCentral->getOperatorMessages((new \DateTime())->modify('-1 mins'), (new \DateTime())->modify('+2 mins'));
+
+        $this->assertTrue(count($result) > 0);
+        $this->assertTrue(count($result) < 10);
+
+        $firstMessage = (array) $result[0];
+
+        $this->assertArrayHasKey('id',  $firstMessage);
+        $this->assertArrayHasKey('to', $firstMessage);
+        $this->assertArrayHasKey('from', $firstMessage);
+        $this->assertArrayHasKey('subject', $firstMessage);
+        $this->assertArrayHasKey('attachments', $firstMessage);
+    }
+
+    /** @test */
     public function it_requires_a_to_number_to_send_an_sms_message()
     {
         $this->expectException(CouldNotSendMessage::class);

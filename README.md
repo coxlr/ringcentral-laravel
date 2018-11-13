@@ -180,7 +180,8 @@ RingCentral::getMessagesForExtensionId(12345678, (new \DateTime())->modify('-1 h
 | Name      | Required | Type          | Default     | Description |
 | ---       | ---      | ---           | ---         | ---         |
 | extensionId  | true    | String      |             | The ringcentral extension Id of the extension to retreive the messages for |
-| fromDate  | false    | DateTime      |             | The date and time to start the search from must be in the format Y-m-d\TH:i:s.z\Z |
+| fromDate  | false    | Object      |             | The date and time to start the search from must be a PHP date object|
+| toDate  | false    | Object      |             | The date and time to end the search must be a PHP date object |
 
 
 

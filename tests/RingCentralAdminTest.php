@@ -93,6 +93,33 @@ class RingCentralAdminTest extends AbstractTestCase
     }
 
     /** @test */
+    public function it_can_retrieve_sent_sms_messages_for_a_given_extension_from_a_set_date_to_a_set_date()
+    {
+        $this->ringCentral->sendMessage([
+            'to' => env('RINGCENTRAL_RECEIVER'),
+            'text' => 'Test Message'
+        ]);
+
+        $result = $this->ringCentral->getMessagesForExtensionId(
+            $this->ringCentral->loggedInExtensionId(), (new \DateTime())->modify('-1 mins'), (new \DateTime())->modify('+2 mins')
+        );
+
+        $this->assertTrue(count($result) > 0);
+        $this->assertTrue(count($result) < 10);
+
+        $firstMessage = (array) $result[0];
+
+        $uriParts = explode('/', $firstMessage['uri']);
+        $this->assertEquals($this->ringCentral->loggedInExtensionId(), $uriParts[8]);
+
+        $this->assertArrayHasKey('id', $firstMessage);
+        $this->assertArrayHasKey('to', $firstMessage);
+        $this->assertArrayHasKey('from', $firstMessage);
+        $this->assertArrayHasKey('subject', $firstMessage);
+        $this->assertArrayHasKey('attachments', $firstMessage);
+    }
+
+    /** @test */
     public function it_can_retrieve_an_sms_messages_attachement()
     {
         $this->ringCentral->sendMessage([

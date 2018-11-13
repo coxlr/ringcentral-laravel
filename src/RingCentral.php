@@ -252,11 +252,12 @@ class RingCentral
 		return $r->json()->records;
 	}
 
-	public function getMessages(string $extensionId = '~', ?object $fromDate = NULL)
+	public function getMessages(string $extensionId = '~', ?object $fromDate = NULL, ?object $toDate = NULL)
 	{
         $r = $this->ringCentral->get('/account/~/extension/'.$extensionId.'/message-store', [
-			 	 'dateFrom' => $fromDate ? $fromDate->format("Y-m-d\TH:i:s.z\Z") : null,
-               ]);
+            'dateFrom' => $fromDate ? $fromDate->format("Y-m-d\TH:i:s.z\Z") : null,
+            'dateTo' => $toDate ? $toDate->format("Y-m-d\TH:i:s.z\Z") : null,
+            ]);
 
         return $r->json()->records;
 	}
@@ -268,11 +269,11 @@ class RingCentral
 		return $this->getMessages('~', $fromDate);
 	}
 
-	public function getMessagesForExtensionId(string $extensionId, ?object $fromDate = NULL)
+	public function getMessagesForExtensionId(string $extensionId, ?object $fromDate = NULL, ?object $toDate = NULL)
 	{
 		$this->authenticateAdmin();
 
-		return $this->getMessages($extensionId, $fromDate);
+		return $this->getMessages($extensionId, $fromDate, $toDate);
 	}
 
     public function getMessageAttachmentById(string $extensionId, string $messageId, string $attachementId)
