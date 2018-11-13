@@ -152,7 +152,7 @@ RingCentral::getOperatorMessages((new \DateTime())->modify('-1 hours'));
 
 | Name      | Required | Type          | Default     | Description |
 | ---       | ---      | ---           | ---         | ---         |
-| fromDate  | false    | DateTime      |             | The date and time to start the search from must be in the format Y-m-d\TH:i:s.z\Z |
+| fromDate  | false    | Object      |             | The date and time to start the search from must be be a PHP date object |
 
 
 ### Get messages sent and received for a given extension (Needs admin access)
