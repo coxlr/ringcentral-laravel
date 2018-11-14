@@ -255,18 +255,19 @@ class RingCentral
 	public function getMessages(string $extensionId = '~', ?object $fromDate = NULL, ?object $toDate = NULL)
 	{
         $r = $this->ringCentral->get('/account/~/extension/'.$extensionId.'/message-store', [
-            'dateFrom' => $fromDate ? $fromDate->format("Y-m-d\TH:i:s.z\Z") : null,
-            'dateTo' => $toDate ? $toDate->format("Y-m-d\TH:i:s.z\Z") : null,
+            'dateFrom' => $fromDate ? $fromDate->format('c') : null,
+            'dateTo' => $toDate ? $toDate->format('c') : null,
+            'messageType' => 'SMS',
             ]);
 
         return $r->json()->records;
 	}
 
-	public function getOperatorMessages(?object $fromDate = NULL)
+	public function getOperatorMessages(?object $fromDate = NULL, ?object $toDate = NULL)
 	{
 		$this->authenticateOperator();
 
-		return $this->getMessages('~', $fromDate);
+		return $this->getMessages('~', $fromDate, $toDate);
 	}
 
 	public function getMessagesForExtensionId(string $extensionId, ?object $fromDate = NULL, ?object $toDate = NULL)
