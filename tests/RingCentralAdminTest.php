@@ -120,6 +120,32 @@ class RingCentralAdminTest extends AbstractTestCase
     }
 
     /** @test */
+    public function it_can_retrieve_operator_sent_sms_messages_with_per_page_limit_set()
+    {
+        $this->ringCentral->sendMessage([
+            'to' => env('RINGCENTRAL_RECEIVER'),
+            'text' => 'Test Message'
+        ]);
+
+        $this->ringCentral->sendMessage([
+            'to' => env('RINGCENTRAL_RECEIVER'),
+            'text' => 'Test Message'
+        ]);
+
+        $result = $this->ringCentral->getMessagesForExtensionId(
+            $this->ringCentral->loggedInExtensionId(), null, null, 1
+        );
+
+        $this->assertTrue(count($result) === 1);
+
+        $result = $this->ringCentral->getMessagesForExtensionId(
+            $this->ringCentral->loggedInExtensionId(), null, null, 2
+        );
+
+        $this->assertTrue(count($result) === 2);
+    }
+
+    /** @test */
     public function it_can_retrieve_an_sms_messages_attachement()
     {
         $this->ringCentral->sendMessage([

@@ -148,12 +148,13 @@ The default from date is the previous 24 hours, to specficy the date to search f
 RingCentral::getOperatorMessages((new \DateTime())->modify('-1 hours'));
 ```
 
-#### Properties
+#### Parameters
 
 | Name      | Required | Type          | Default     | Description |
 | ---       | ---      | ---           | ---         | ---         |
 | fromDate  | false    | Object      |             | The date and time to start the search from must be be a PHP date object |
-
+| toDate  | false    | Object      |             | The date and time to end the search must be a PHP date object |
+| perPage  | false    | Int      |  100           | The number of records to return per page |
 
 ### Get messages sent and received for a given extension (Needs admin access)
 
@@ -175,14 +176,14 @@ The default from date is the previous 24 hours, to specficy the date to search f
 RingCentral::getMessagesForExtensionId(12345678, (new \DateTime())->modify('-1 hours'));
 ```
 
-#### Properties
+#### Parameters
 
 | Name      | Required | Type          | Default     | Description |
 | ---       | ---      | ---           | ---         | ---         |
 | extensionId  | true    | String      |             | The ringcentral extension Id of the extension to retreive the messages for |
 | fromDate  | false    | Object      |             | The date and time to start the search from must be a PHP date object|
 | toDate  | false    | Object      |             | The date and time to end the search must be a PHP date object |
-
+| perPage  | false    | Int      |  100           | The number of records to return per page |
 
 
 ### Get a messages attachment (requires admin access)

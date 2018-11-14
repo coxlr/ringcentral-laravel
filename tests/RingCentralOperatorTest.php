@@ -100,6 +100,28 @@ class RingCentralOperatorTest extends AbstractTestCase
     }
 
     /** @test */
+    public function it_can_retrieve_operator_sent_sms_messages_with_per_page_limit_set()
+    {
+        $this->ringCentral->sendMessage([
+            'to' => env('RINGCENTRAL_RECEIVER'),
+            'text' => 'Test Message'
+        ]);
+
+        $this->ringCentral->sendMessage([
+            'to' => env('RINGCENTRAL_RECEIVER'),
+            'text' => 'Test Message'
+        ]);
+
+        $result = $this->ringCentral->getOperatorMessages(null, null, 1);
+
+        $this->assertTrue(count($result) === 1);
+
+        $result = $this->ringCentral->getOperatorMessages(null, null, 2);
+
+        $this->assertTrue(count($result) === 2);
+    }
+
+    /** @test */
     public function it_requires_a_to_number_to_send_an_sms_message()
     {
         $this->expectException(CouldNotSendMessage::class);
