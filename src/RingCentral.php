@@ -254,12 +254,21 @@ class RingCentral
 
     public function getMessages(string $extensionId = '~', ?object $fromDate = NULL, ?object $toDate = NULL, $perPage)
     {
-        $r = $this->ringCentral->get('/account/~/extension/'.$extensionId.'/message-store', [
-            'dateFrom' => $fromDate ? $fromDate->format('c') : null,
-            'dateTo' => $toDate ? $toDate->format('c') : null,
+        $dates = [];
+
+        if($fromDate){
+            $dates['dateFrom'] = $fromDate->format('c');
+        }
+
+        if($toDate){
+            $dates['dateTo'] = $toDate->format('c');
+        }
+
+        $r = $this->ringCentral->get('/account/~/extension/'.$extensionId.'/message-store', array_merge([
             'messageType' => 'SMS',
             'perPage' => $perPage,
-        ]);
+        ], $dates
+        ));
 
         return $r->json()->records;
     }

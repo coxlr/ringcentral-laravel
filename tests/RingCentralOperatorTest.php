@@ -11,7 +11,7 @@ class RingCentralOperatorTest extends AbstractTestCase
 	/** @var Coxy121\RingCentralLaravel\RingCentral */
     protected $ringCentral;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
@@ -33,7 +33,7 @@ class RingCentralOperatorTest extends AbstractTestCase
         if (! file_exists(__DIR__.'/../.env')) {
             return;
         }
-        $dotenv = new Dotenv(__DIR__.'/..');
+        $dotenv = Dotenv::create(__DIR__.'/..');
         $dotenv->load();
     }
 

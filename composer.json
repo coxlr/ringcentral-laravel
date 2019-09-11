@@ -10,18 +10,18 @@
     "authors": [
         {
             "name": "Lee Cox",
-            "email": "leercox121@gmail.com"
+            "email": "hey@leecox.me"
         }
     ],
     "require": {
-        "php": ">=7.1",
-        "illuminate/support": "^5.2",
-        "ringcentral/ringcentral-php": "dev-master"
+        "php": ">=7.1.3",
+        "illuminate/support": "~5.8.0|^6.0",
+        "ringcentral/ringcentral-php": "^2.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0",
-        "orchestra/testbench": "^3.7",
-        "vlucas/phpdotenv": "^2.5"
+        "phpunit/phpunit": "^8.3",
+        "orchestra/testbench": "^4.0",
+        "vlucas/phpdotenv": "^3.6"
     },
     "autoload": {
         "psr-4": {
