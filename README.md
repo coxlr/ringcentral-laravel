@@ -26,7 +26,7 @@ Alternatively, add these two lines to your composer require section:
 
 ### Laravel 5.5+
 
-If you're using Laravel 5.5 or above, the package will automatically register the `RingCentral` provider and facade.
+If you are using Laravel 5.5 or above, the package will automatically register the `RingCentral` provider and facade.
 
 ### Laravel 5.4 and below
 
@@ -86,7 +86,7 @@ Usage
    
 To use the RingCentral Client Library you can use the facade, or request the instance from the service container.
 
-### Sending an SMS message (requires login in extension to be comany operator)
+### Sending an SMS message (requires login in extension to be company operator)
 
 ```php
 RingCentral::sendMessage([
@@ -114,7 +114,7 @@ $ringcentral->sendMessage([
 | to        | true      | String     |             | The number to send the message to, must include country code |
 | text        | true      | String   |             | The text of the message to send |
 
-### Retreiving Extensions (requires admin access)
+### Retrieving Extensions (requires admin access)
 
 ```php
 RingCentral::getExtensions();
@@ -142,7 +142,7 @@ $ringcentral = app('ringcentral');
 $ringcentral->getOperatorMessages();
 ```
 
-The default from date is the previous 24 hours, to specficy the date to search from pass the require date as a parameter.
+The default from date is the previous 24 hours, to specify the date to search from pass the require date as a parameter.
 
 ```php
 RingCentral::getOperatorMessages((new \DateTime())->modify('-1 hours'));
@@ -152,7 +152,7 @@ RingCentral::getOperatorMessages((new \DateTime())->modify('-1 hours'));
 
 | Name      | Required | Type          | Default     | Description |
 | ---       | ---      | ---           | ---         | ---         |
-| fromDate  | false    | Object      |             | The date and time to start the search from must be be a PHP date object |
+| fromDate  | false    | Object      |             | The date and time to start the search from must be a PHP date object |
 | toDate  | false    | Object      |             | The date and time to end the search must be a PHP date object |
 | perPage  | false    | Int      |  100           | The number of records to return per page |
 
@@ -180,7 +180,7 @@ RingCentral::getMessagesForExtensionId(12345678, (new \DateTime())->modify('-1 h
 
 | Name      | Required | Type          | Default     | Description |
 | ---       | ---      | ---           | ---         | ---         |
-| extensionId  | true    | String      |             | The ringcentral extension Id of the extension to retreive the messages for |
+| extensionId  | true    | String      |             | The RingCentral extension Id of the extension to retrieve the messages for |
 | fromDate  | false    | Object      |             | The date and time to start the search from must be a PHP date object|
 | toDate  | false    | Object      |             | The date and time to end the search must be a PHP date object |
 | perPage  | false    | Int      |  100           | The number of records to return per page |
@@ -205,7 +205,7 @@ $ringcentral->getMessageAttachmentById(12345678, 910111213, 45678910);
 
 | Name      | Required | Type          | Default     | Description |
 | ---       | ---      | ---           | ---         | ---         |
-| extensionId  | true    | String      |             | The ringcentral extension Id of the extension the messages belongs to |
+| extensionId  | true    | String      |             | The RingCentral extension Id of the extension the messages belongs to |
 | messageId  | true    | String      |             | The id of the message of the the attachment belongs to |
 | attachmentId  | true    | String      |             | The id of the attachment |
 
