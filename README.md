@@ -1,6 +1,8 @@
 
 ## RingCentral Package for Laravel
 
+**DEPRECATED** in favor of [coxlr/laravel-ringcentral](https://github.com/coxlr/laravel-ringcentral)
+
 ## Introduction
 
 This is a simple Laravel Service Provider providing access to the [RingCentral SDK for PHP][client-library].
